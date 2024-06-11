@@ -1,0 +1,22 @@
+if (m_qpIncrementAtSourceFrame.bPresent)
+  {
+    UInt switchingPOC=0;
+    if (m_qpIncrementAtSourceFrame.value > m_FrameSkip)
+    {
+      // if switch source frame (ssf) = 10, and frame skip (fs)=2 and temporal subsample ratio (tsr) =1, then
+      //    for this simulation switch at POC 8 (=10-2).
+      // if ssf=10, fs=2, tsr=2, then for this simulation, switch at POC 4 (=(10-2)/2): POC0=Src2, POC1=Src4, POC2=Src6, POC3=Src8, POC4=Src10
+      switchingPOC = (m_qpIncrementAtSourceFrame.value - m_FrameSkip) / m_temporalSubsampleRatio;
+    }
+    for(UInt i=switchingPOC; i<( m_framesToBeEncoded + m_iGOPSize + 1 ); i++)
+    {
+        // Prompt the user for the QP value for the current frame
+        UInt qp;
+        std::cout << "Enter QP for frame " << i << ": ";
+        std::cin >> qp;
+
+        // Set the QP value for the current frame
+        m_aidQP[i] = qp;
+        //m_aidQP[i] = 1;
+    }
+  }
